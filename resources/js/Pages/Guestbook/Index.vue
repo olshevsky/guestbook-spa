@@ -21,10 +21,10 @@
                 </td>
                 <td class="border px-4 py-2">
                     {{ message.message }}
-                    <a href="" target="_blank">
-                        <img :src="message.image" class="max-w-md">
+                    <a v-if="message.image" :href="'storage/' + message.image" target="_blank">
+                        <img :src="'storage/' + message.image" class="max-w-md" width="200">
                     </a>
-                    <p class="italic">Edited: 01.01.2023 08:00:00</p>
+                    <p v-if="message.edited_at" class="italic">Edited: {{ message.edited_at }}</p>
                 </td>
                 <td class="border px-4 py-2">{{ message.created_at }}</td>
                 <td class="border px-4 py-2">
