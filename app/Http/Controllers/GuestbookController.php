@@ -10,10 +10,14 @@ use Illuminate\Support\Facades\Storage;
 
 class GuestbookController extends Controller
 {
+    private $editMinutes = 5;
+
     public function index(Request $request)
     {
         return Inertia::render('Guestbook/Index', [
-            'messages' => GuestbookMessage::all()
+            'messages' => GuestbookMessage::all(),
+            'userIp'=> $request->ip(),
+            'editMinutes' => $this->editMinutes
         ]);
     }
 
@@ -47,5 +51,15 @@ class GuestbookController extends Controller
 
         return to_route('guestbook');
         //return Redirect::route('guestbook')->with('success', 'Contact created.');
+    }
+
+    public function destroy(GuestbookMessage $message, Request $request)
+    {
+        if($message->ip === $request->ip()){
+            $message->delete();
+        }
+
+        return to_route('guestbook');
+//        return Redirect::back()->with('success', 'Contact deleted.');
     }
 }

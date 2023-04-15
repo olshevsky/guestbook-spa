@@ -2,7 +2,7 @@
     <div class="p-6">
         <h1 class="text-2xl font-bold mb-6">Leave a Message</h1>
         <Link href="/guestbook" replace>Home</Link>
-        <form @submit.prevent="submitForm" class="max-w-lg mx-auto">
+        <form @submit.prevent="submit" class="max-w-lg mx-auto">
             <div class="mb-4">
                 <label for="name" class="block text-gray-700 font-bold mb-2">Name:</label>
                 <input type="text" id="name" v-model="form.name" :class="(errors.name ? ' border-red-500' : '') + ' shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'">
@@ -44,7 +44,7 @@ const form = useForm({
     image: null,
 })
 
-function submitForm(){
+const submit = () => {
     form.post('/guestbook')
 }
 </script>

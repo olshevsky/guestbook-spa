@@ -14,7 +14,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="message in messages" :key="message.id">
+            <tr v-for="message in rows" :key="message.id">
                 <td class="border px-4 py-2">
                     <span>{{ message.name }} &nbsp;</span>
                     <a :href="'mailto:' + message.email">{{ message.email }}</a>
@@ -28,8 +28,8 @@
                 </td>
                 <td class="border px-4 py-2">{{ message.created_at }}</td>
                 <td class="border px-4 py-2">
-                    <button @click="editMessage(message)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2">Edit</button>
-                    <button @click="deleteMessage(message)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Delete</button>
+                    <button v-if="message.editable" @click="editMessage(message)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2">Edit</button>
+                    <button v-if="message.editable" @click="deleteMessage(message)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Delete</button>
                 </td>
             </tr>
             </tbody>
@@ -39,15 +39,38 @@
 
 <script setup>
 
-import { Link } from '@inertiajs/vue3'
+import { computed } from "vue";
+import { Link, useForm } from '@inertiajs/vue3'
 
-const props = defineProps(['messages']);
+const props = defineProps(['messages', 'userIp', 'editMinutes'])
+const rows = computed(() => {
+    const res = []
+    for(const message of props.messages){
+        const editExpired = (((new Date() - new Date(message.created_at)) / 1000 / 60) > props.editMinutes )
 
+        res.push({
+            id: message.id,
+            name: message.name,
+            email: message.email,
+            image: message.image,
+            message: message.message,
+            created_at: message.created_at,
+            edited_at: message.edited_at,
+            editable: (message.ip === props.userIp && !editExpired),
+            //editable: true,
+        })
+    }
+
+    return res;
+})
 const editMessage = (message) => {
     alert('edit')
 }
 
 const deleteMessage = (message) => {
-    alert('delete')
+    const form = useForm({})
+    if (confirm('Are you sure you want to delete this message?')) {
+        form.delete(`/guestbook/${message.id}`)
+    }
 }
 </script>
