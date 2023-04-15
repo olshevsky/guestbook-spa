@@ -48,7 +48,7 @@ const imageUpload = (event) => {
 }
 
 const submit = () => {
-    router.post('/guestbook/'+props.message.id, {
+    router.post(`/guestbook/${props.message.id}`, {
         _method: 'put',
         name: form.name,
         email: form.email,

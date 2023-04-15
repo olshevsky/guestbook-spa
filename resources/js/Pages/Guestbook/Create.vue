@@ -45,6 +45,6 @@ const form = useForm({
 })
 
 const submit = () => {
-    form.post('/guestbook')
+    form.post(`/guestbook`)
 }
 </script>
