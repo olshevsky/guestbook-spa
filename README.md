@@ -2,7 +2,7 @@
 
 0. Clone repo to your directory.
 1. Create vendor dir:
-    mkdir vendor
+    - mkdir vendor
 
 2. If you have globally installed php and composer run:
     - composer require laravel/sail --dev
