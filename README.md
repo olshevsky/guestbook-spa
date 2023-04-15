@@ -3,7 +3,7 @@
 0. Clone repo to your directory.
 
 1. In project dir run:
-    - ./vendor/bin/sail up
+    - ./vendor/bin/sail up -d
    
 2. Run:
     - docker ps
