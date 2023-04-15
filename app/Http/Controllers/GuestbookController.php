@@ -11,8 +11,14 @@ class GuestbookController extends Controller
 {
     public function index(Request $request)
     {
+        $orderBy = $request->get('orderBy', 'created_at');
+        $order = $request->query('order', 'desc');
+
         return Inertia::render('Guestbook/Index', [
-            'messages' => GuestbookMessage::all(),
+            'messages' => GuestbookMessage::orderBy($orderBy, $order)
+                ->paginate(10),
+            'orderBy' => $orderBy,
+            'order' => $order,
             'userIp'=> $request->ip(),
             'editMinutes' => GuestbookMessage::$editMinutes
         ]);

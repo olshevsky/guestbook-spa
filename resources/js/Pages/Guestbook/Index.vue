@@ -7,17 +7,36 @@
         <table class="table-fixed w-full">
             <thead>
             <tr>
-                <th class="w-1/8 px-4 py-2 text-left">Name</th>
-                <th class="w-2/4 px-4 py-2 text-left">Message</th>
-                <th class="w-1/8 px-4 py-2 text-left">Created At</th>
-                <th class="w-1/4 px-4 py-2 text-left">Actions</th>
+                <th class="w-2/12 px-4 py-2 text-left cursor-pointer">
+                    <button @click="sort('name')" class="flex items-center">
+                        <span>Name</span>
+                        <svg v-if="orderBy === 'name'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="ml-2 h-4 w-4">
+                            <path v-if="order === 'asc'" d="M10 3l-7 9h14z" />
+                            <path v-else-if="order === 'desc'" d="M10 17l-7-9h14z" />
+                        </svg>
+                    </button>
+
+                </th>
+                <th class="w-6/12 px-4 py-2 text-left">Message</th>
+                <th class="w-2/12 px-4 py-2 text-left cursor-pointer">
+                    <button @click="sort('created_at')" class="flex items-center">
+                        <span>Created At</span>
+                        <svg v-if="orderBy === 'created_at'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="ml-2 h-4 w-4">
+                            <path v-if="order === 'asc'" d="M10 3l-7 9h14z" />
+                            <path v-else-if="order === 'desc'" d="M10 17l-7-9h14z" />
+                        </svg>
+                    </button>
+                </th>
+                <th class="w-2/12 px-4 py-2 text-left">Actions</th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="message in rows" :key="message.id">
                 <td class="border px-4 py-2">
-                    <span>{{ message.name }} &nbsp;</span>
-                    <a :href="'mailto:' + message.email">{{ message.email }}</a>
+                    <p>{{ message.name }}</p>
+                    <p>
+                        <a :href="'mailto:' + message.email">{{ message.email }}</a>
+                    </p>
                 </td>
                 <td class="border px-4 py-2">
                     {{ message.message }}
@@ -37,18 +56,24 @@
             </tr>
             </tbody>
         </table>
+        <div class="flex justify-center">
+            <pagination class="flex mt-6" :links="messages.links" />
+        </div>
     </div>
 </template>
 
 <script setup>
 
-import { computed } from "vue";
-import { Link, useForm } from '@inertiajs/vue3'
+import { computed, ref } from "vue";
+import { Link, useForm, router } from '@inertiajs/vue3'
+import Pagination from '@/Components/Pagination.vue'
 
-const props = defineProps(['messages', 'userIp', 'editMinutes'])
+const props = defineProps(['messages', 'userIp', 'editMinutes', 'orderBy', 'order'])
+const orderBy = ref(props.orderBy)
+const order = ref(props.order)
 const rows = computed(() => {
     const res = []
-    for(const message of props.messages){
+    for(const message of props.messages.data){
         const editExpired = (((new Date() - new Date(message.created_at)) / 1000 / 60) > props.editMinutes )
 
         res.push({
@@ -65,6 +90,12 @@ const rows = computed(() => {
 
     return res
 })
+
+const sort = (field) => {
+    orderBy.value = field
+    order.value = order.value === 'asc' ? 'desc' : 'asc'
+    router.get(`/guestbook?orderBy=${orderBy.value}&order=${order.value}`)
+}
 
 const deleteMessage = (message) => {
     const form = useForm({})
