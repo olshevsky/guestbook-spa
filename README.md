@@ -8,12 +8,7 @@
     
    If not run:
    - mkdir vendor
-   - docker run --rm \
-    -u "$(id -u):$(id -g)" \
-    -v "$(pwd):/var/www/html" \
-    -w /var/www/html \
-    laravelsail/php82-composer:latest \
-    composer install --ignore-platform-reqs
+   - docker run --rm -u "$(id -u):$(id -g)" -v "$(pwd):/var/www/html" -w /var/www/html laravelsail/php82-composer:latest composer install --ignore-platform-reqs
     
 2. Make sure that ./storage folder has write permissions
 
@@ -27,7 +22,7 @@
 5. Login into app container: 
     - docker exec -it {CONTAINER ID} /bin/sh
 
-6. Install dependencies, build assets, create symlink and run migrations:
+6. Install dependencies, build assets, create storage symlink and run migrations:
     - composer install
     - php artisan migrate
     - php artisan storage:link
