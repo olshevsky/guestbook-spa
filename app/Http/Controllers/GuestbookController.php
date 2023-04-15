@@ -53,6 +53,40 @@ class GuestbookController extends Controller
         //return Redirect::route('guestbook')->with('success', 'Contact created.');
     }
 
+    public function edit(GuestbookMessage $message)
+    {
+        return Inertia::render('Guestbook/Edit', [
+            'message' => [
+                'id' => $message->id,
+                'name' => $message->name,
+                'email' => $message->email,
+                'message' => $message->message,
+                'image' => $message->image,
+                'ip' => $message->ip,
+                'created_at' => $message->created_at
+            ],
+        ]);
+    }
+
+    public function update(GuestbookMessage $message, Request $request)
+    {
+        $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255',
+            'message' => 'required|max:1000',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:4096',
+        ]);
+
+        $message = GuestbookMessage::findOrFail($message->id);
+        $message->name = $request->get('name');
+        $message->email = $request->get('email');
+        $message->message = $request->get('message');
+        $message->save();
+
+        return to_route('guestbook');
+//        return Redirect::back()->with('success', 'Contact updated.');
+    }
+
     public function destroy(GuestbookMessage $message, Request $request)
     {
         if($message->ip === $request->ip()){

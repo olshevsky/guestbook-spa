@@ -28,8 +28,11 @@
                 </td>
                 <td class="border px-4 py-2">{{ message.created_at }}</td>
                 <td class="border px-4 py-2">
-                    <button v-if="message.editable" @click="editMessage(message)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2">Edit</button>
-                    <button v-if="message.editable" @click="deleteMessage(message)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Delete</button>
+                    <Link v-if="message.editable" :href="`/guestbook/${message.id}/edit`" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        Edit
+                    </Link>
+                    &nbsp;
+                    <button v-if="message.editable" @click="deleteMessage(message)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1.5 px-4 rounded focus:outline-none focus:shadow-outline">Delete</button>
                 </td>
             </tr>
             </tbody>
@@ -57,15 +60,11 @@ const rows = computed(() => {
             created_at: message.created_at,
             edited_at: message.edited_at,
             editable: (message.ip === props.userIp && !editExpired),
-            //editable: true,
         })
     }
 
-    return res;
+    return res
 })
-const editMessage = (message) => {
-    alert('edit')
-}
 
 const deleteMessage = (message) => {
     const form = useForm({})
