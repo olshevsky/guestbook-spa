@@ -1,10 +1,8 @@
 # Installation
 
 0. Clone repo to your directory.
-1. Create vendor dir:
-    - mkdir vendor
 
-2. If you have globally installed php and composer run:
+1. If you have globally installed php and composer run:
     - composer require laravel/sail --dev
     - php artisan sail:install
     
@@ -16,8 +14,10 @@
     -w /var/www/html \
     laravelsail/php82-composer:latest \
     composer install --ignore-platform-reqs
+    
+2. Make sure that ./storage folder has write permissions
 
-3. In project dir run:
+3. Run:
     - ./vendor/bin/sail up -d
    
 4. Run:
