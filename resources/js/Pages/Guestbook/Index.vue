@@ -1,9 +1,11 @@
 <template>
     <div class="p-6">
         <h1 class="text-2xl font-bold mb-6">Messages</h1>
-        <Link href="/guestbook/create" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-            <span>Create message</span>
-        </Link>
+        <div class="mb-6">
+            <Link href="/guestbook/create" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                <span>Leave message</span>
+            </Link>
+        </div>
         <table class="table-fixed w-full">
             <thead>
             <tr>
@@ -15,7 +17,6 @@
                             <path v-else-if="order === 'desc'" d="M10 17l-7-9h14z" />
                         </svg>
                     </button>
-
                 </th>
                 <th class="w-6/12 px-4 py-2 text-left">Message</th>
                 <th class="w-2/12 px-4 py-2 text-left cursor-pointer">
@@ -75,7 +76,6 @@ const rows = computed(() => {
     const res = []
     for(const message of props.messages.data){
         const editExpired = (((new Date() - new Date(message.created_at)) / 1000 / 60) > props.editMinutes )
-
         res.push({
             id: message.id,
             name: message.name,

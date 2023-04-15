@@ -16,14 +16,14 @@ use App\Http\Controllers\GuestbookController;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+//Route::get('/', function () {
+//    return Inertia::render('Welcome', [
+//        'canLogin' => Route::has('login'),
+//        'canRegister' => Route::has('register'),
+//        'laravelVersion' => Application::VERSION,
+//        'phpVersion' => PHP_VERSION,
+//    ]);
+//});
 
 Route::middleware([
     'auth:sanctum',
@@ -35,6 +35,7 @@ Route::middleware([
     })->name('dashboard');
 });
 
+Route::get('/', [GuestbookController::class, 'index'])->name('guestbook');
 Route::get('guestbook', [GuestbookController::class, 'index'])->name('guestbook');
 Route::get('guestbook/create', [GuestbookController::class, 'create'])->name('guestbook.create');
 Route::post('guestbook', [GuestbookController::class, 'store'])->name('guestbook.store');
