@@ -41,4 +41,3 @@ Route::post('guestbook', [GuestbookController::class, 'store'])->name('guestbook
 Route::get('guestbook/{message}/edit', [GuestbookController::class, 'edit'])->name('guestbook.edit');
 Route::put('guestbook/{message}', [GuestbookController::class, 'update'])->name('guestbook.update');
 Route::delete('guestbook/{message}', [GuestbookController::class, 'destroy'])->name('guestbook.destroy');
-Route::put('guestbook/{message}/restore', [GuestbookController::class, 'restore'])->name('guestbook.restore');

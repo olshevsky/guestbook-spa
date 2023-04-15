@@ -50,7 +50,6 @@ class GuestbookController extends Controller
         $message->save();
 
         return to_route('guestbook');
-        //return Redirect::route('guestbook')->with('success', 'Contact created.');
     }
 
     public function edit(GuestbookMessage $message)
@@ -81,10 +80,16 @@ class GuestbookController extends Controller
         $message->name = $request->get('name');
         $message->email = $request->get('email');
         $message->message = $request->get('message');
+        $message->edited_at = now();
+
+        if ($request->hasFile('image')) {
+            $message->image = Storage::disk('public')
+                ->put('images/guestbook', request()->file('image'));
+        }
+
         $message->save();
 
         return to_route('guestbook');
-//        return Redirect::back()->with('success', 'Contact updated.');
     }
 
     public function destroy(GuestbookMessage $message, Request $request)
@@ -94,6 +99,5 @@ class GuestbookController extends Controller
         }
 
         return to_route('guestbook');
-//        return Redirect::back()->with('success', 'Contact deleted.');
     }
 }

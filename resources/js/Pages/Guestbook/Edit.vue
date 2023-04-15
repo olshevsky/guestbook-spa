@@ -20,17 +20,18 @@
             </div>
             <div class="mb-4">
                 <label for="image" class="block text-gray-700 font-bold mb-2">Image:</label>
-                <input id="image" type="file" @input="form.image = $event.target.files[0]" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+                <img v-if="message.image" :src="'../../storage/' + message.image" class="max-w-md" width="200">
+                <input id="image" type="file" @input="imageUpload" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
                 <p v-if="errors.image" class="text-red-500 text-xs italic">{{ errors.image }}</p>
             </div>
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit</button>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Update</button>
         </form>
     </div>
 </template>
 
 <script setup>
 
-import { useForm, Link } from '@inertiajs/vue3'
+import { useForm, Link, router } from '@inertiajs/vue3'
 
 const props = defineProps(['message', 'errors'])
 
@@ -38,10 +39,21 @@ const form = useForm({
     name: props.message.name,
     email: props.message.email,
     message: props.message.message,
-    image: props.message.image,
+    image: null,
 })
 
+const imageUpload = (event) => {
+    form.image = event.target.files[0]
+    props.message.image = null
+}
+
 const submit = () => {
-    form.put('/guestbook/'+props.message.id, form)
+    router.post('/guestbook/'+props.message.id, {
+        _method: 'put',
+        name: form.name,
+        email: form.email,
+        message: form.message,
+        image: form.image,
+    })
 }
 </script>
