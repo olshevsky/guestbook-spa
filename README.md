@@ -8,14 +8,9 @@
     
    If not run:
    - mkdir vendor
-   - docker run --rm \
-    -u "$(id -u):$(id -g)" \
-    -v "$(pwd):/var/www/html" \
-    -w /var/www/html \
-    laravelsail/php82-composer:latest \
-    composer install --ignore-platform-reqs
-    
-2. Make sure that ./storage folder has write permissions
+   - docker docker run --rm -u "$(id -u):$(id -g)" -v "$(pwd):/var/www/html" -w /var/www/html laravelsail/php82-composer:latest composer install --ignore-platform-reqs
+
+2. Make sure that ./storage folder and files has write permissions
 
 3. Run:
     - ./vendor/bin/sail up -d
@@ -28,10 +23,11 @@
     - docker exec -it {CONTAINER ID} /bin/sh
 
 6. Install dependencies, build assets and run migrations:
-    - npm install
-    - npm run build
     - composer install
     - php artisan migrate
+    - npm install
+    - npm run build
+    - npm run dev
     
 7. App url:
    http://localhost:80
