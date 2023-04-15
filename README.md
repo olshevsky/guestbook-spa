@@ -31,7 +31,10 @@
     - php artisan storage:link
     - npm install
     - npm run build
-    - npm run dev
     
-7. App url:
+7. Restart docker and run:
+    - docker exec -it {CONTAINER ID} /bin/sh
+    - npm run dev 
+    
+8. App url:
    http://localhost:80
