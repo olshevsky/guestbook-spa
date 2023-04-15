@@ -57,8 +57,8 @@ const rows = computed(() => {
             email: message.email,
             image: message.image,
             message: message.message,
-            created_at: message.created_at,
-            edited_at: message.edited_at,
+            created_at: new Date(message.created_at).toLocaleString("lv-Lv"),
+            edited_at: message.edited_at ? new Date(message.edited_at).toLocaleString("lv-Lv") : null,
             editable: (message.ip === props.userIp && !editExpired),
         })
     }
