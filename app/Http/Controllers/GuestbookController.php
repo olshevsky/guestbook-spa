@@ -3,21 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use App\Models\GuestbookMessage;
 use Illuminate\Support\Facades\Storage;
 
 class GuestbookController extends Controller
 {
-    private $editMinutes = 5;
-
     public function index(Request $request)
     {
         return Inertia::render('Guestbook/Index', [
             'messages' => GuestbookMessage::all(),
             'userIp'=> $request->ip(),
-            'editMinutes' => $this->editMinutes
+            'editMinutes' => GuestbookMessage::$editMinutes
         ]);
     }
 
@@ -52,8 +49,11 @@ class GuestbookController extends Controller
         return to_route('guestbook');
     }
 
-    public function edit(GuestbookMessage $message)
+    public function edit(GuestbookMessage $message, Request $request)
     {
+        if(!$message->isEditable($request->ip()))
+            return to_route('guestbook');
+
         return Inertia::render('Guestbook/Edit', [
             'message' => [
                 'id' => $message->id,
@@ -77,6 +77,9 @@ class GuestbookController extends Controller
         ]);
 
         $message = GuestbookMessage::findOrFail($message->id);
+        if(!$message->isEditable($request->ip()))
+            return to_route('guestbook');
+
         $message->name = $request->get('name');
         $message->email = $request->get('email');
         $message->message = $request->get('message');
@@ -94,7 +97,7 @@ class GuestbookController extends Controller
 
     public function destroy(GuestbookMessage $message, Request $request)
     {
-        if($message->ip === $request->ip()){
+        if($message->isEditable($request->ip())){
             $message->delete();
         }
 

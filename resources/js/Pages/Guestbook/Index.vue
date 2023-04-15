@@ -4,13 +4,13 @@
         <Link href="/guestbook/create" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
             <span>Create message</span>
         </Link>
-        <table class="table-auto w-full">
+        <table class="table-fixed w-full">
             <thead>
             <tr>
-                <th class="px-4 py-2 text-left">Name</th>
-                <th class="px-4 py-2 text-left">Message</th>
-                <th class="px-4 py-2 text-left">Created At</th>
-                <th class="px-4 py-2 text-left">Actions</th>
+                <th class="w-1/8 px-4 py-2 text-left">Name</th>
+                <th class="w-2/4 px-4 py-2 text-left">Message</th>
+                <th class="w-1/8 px-4 py-2 text-left">Created At</th>
+                <th class="w-1/4 px-4 py-2 text-left">Actions</th>
             </tr>
             </thead>
             <tbody>
