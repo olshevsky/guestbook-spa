@@ -1,6 +1,8 @@
 # Installation
 
-0. Clone repo to your directory.
+0. Clone repo and cd to project dir:
+    - git clone https://github.com/olshevsky/guestbook-spa.git guestbook-spa
+    - cd ./guestbook-spa
 
 1. If you have globally installed php and composer run:
     - composer require laravel/sail --dev
@@ -8,6 +10,7 @@
     
    If not run:
    - mkdir vendor
+   - make sure ./vendor folder has write permissions
    - docker run --rm -u "$(id -u):$(id -g)" -v "$(pwd):/var/www/html" -w /var/www/html laravelsail/php82-composer:latest composer install --ignore-platform-reqs
     
 2. Make sure that ./storage folder has write permissions
