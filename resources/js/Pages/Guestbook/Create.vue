@@ -4,7 +4,7 @@
         <div class="mb-6">
             <Link href="/guestbook" replace>Message list</Link>
         </div>
-        <form @submit.prevent="submit" class="max-w-lg mx-r">
+        <form method="POST" @submit.prevent="recaptcha" class="max-w-lg mx-r">
             <div class="mb-4">
                 <label for="name" class="block text-gray-700 font-bold mb-2">Name:</label>
                 <input type="text" id="name" v-model="form.name" :class="(errors.name ? ' border-red-500' : '') + ' shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'">
@@ -25,6 +25,9 @@
                 <input id="image" type="file" @input="form.image = $event.target.files[0]" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
                 <p v-if="errors.image" class="text-red-500 text-xs italic">{{ errors.image }}</p>
             </div>
+            <div>
+                <p v-if="errors.captcha" class="text-red-500 text-xs italic">{{ errors.captcha }}</p>
+            </div>
             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit</button>
         </form>
     </div>
@@ -33,15 +36,24 @@
 <script setup>
 
 import { useForm, Link } from '@inertiajs/vue3'
+import { useReCaptcha } from "vue-recaptcha-v3";
 
 defineProps({ errors: Object })
+const { executeRecaptcha, recaptchaLoaded } = useReCaptcha()
 
 const form = useForm({
     name: '',
     email: '',
     message: '',
     image: null,
+    captcha :null,
 })
+
+const recaptcha = async () => {
+    await recaptchaLoaded()
+    form.captcha = await executeRecaptcha('login')
+    submit();
+}
 
 const submit = () => {
     form.post(`/guestbook`)

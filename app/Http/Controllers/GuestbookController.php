@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\GuestbookMessage;
 use Illuminate\Support\Facades\Storage;
+use App\Rules\Recaptcha;
 
 class GuestbookController extends Controller
 {
@@ -36,6 +37,7 @@ class GuestbookController extends Controller
             'email' => 'required|email|max:255',
             'message' => 'required|max:1000',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:4096',
+            'captcha'  => [new Recaptcha],
         ]);
 
         $message = GuestbookMessage::create($request->only([
@@ -80,6 +82,7 @@ class GuestbookController extends Controller
             'email' => 'required|email|max:255',
             'message' => 'required|max:1000',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:4096',
+            'captcha'  => [new Recaptcha],
         ]);
 
         $message = GuestbookMessage::findOrFail($message->id);

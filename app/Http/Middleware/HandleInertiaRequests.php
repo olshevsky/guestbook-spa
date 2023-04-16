@@ -34,10 +34,10 @@ class HandleInertiaRequests extends Middleware
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function share(Request $request): array
+    public function share(Request $request)
     {
         return array_merge(parent::share($request), [
-            //
+            'recaptcha_site_key' => config('services.google_recaptcha.site_key'),
         ]);
     }
 }
