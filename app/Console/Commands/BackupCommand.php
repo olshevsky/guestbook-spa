@@ -28,8 +28,11 @@ class BackupCommand extends Command
         $now = \Carbon\Carbon::now()->format('Y-m-d_H-i-s');
         $fileName = 'backup_'.$now.'.sql';
         $backupPath = storage_path('app/backups/'.$fileName);
-        exec('mysqldump --user='.env('DB_USERNAME').' --password='.env('DB_PASSWORD').' --host='.env('DB_HOST').' '.env('DB_DATABASE').' > '.$backupPath);
+        $result = exec('mysqldump --user='.env('DB_USERNAME').' --password='.env('DB_PASSWORD').' --host='.env('DB_HOST').' '.env('DB_DATABASE').' > '.$backupPath);
 
-        $this->info('Database backup saved to '.$backupPath);
+        if($result)
+            $this->info('Database backup saved to '.$backupPath);
+        else
+            $this->info('Something went wrong. Check if  '.storage_path('app/backups/').' folder exist and is writable  ');
     }
 }
