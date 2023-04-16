@@ -1,5 +1,7 @@
 # Installation
 
+Note there is .env file in repo for quick setup, but all api keys will be revoked after few days.
+
 0. Clone repo and cd to project dir:
     - git clone https://github.com/olshevsky/guestbook-spa.git guestbook-spa
     - cd ./guestbook-spa
