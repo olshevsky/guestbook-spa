@@ -21,7 +21,8 @@ class GuestbookController extends Controller
             'orderBy' => $orderBy,
             'order' => $order,
             'userIp'=> $request->ip(),
-            'editMinutes' => GuestbookMessage::$editMinutes
+            'editMinutes' => GuestbookMessage::$editMinutes,
+            'isAdmin' => $this->isAdmin()
         ]);
     }
 
@@ -59,8 +60,9 @@ class GuestbookController extends Controller
 
     public function edit(GuestbookMessage $message, Request $request)
     {
-        if(!$message->isEditable($request->ip()))
-            return to_route('guestbook');
+        if(!$message->isEditable($request->ip()) &&
+            !$this->isAdmin())
+                return to_route('guestbook');
 
         return Inertia::render('Guestbook/Edit', [
             'message' => [
@@ -86,8 +88,9 @@ class GuestbookController extends Controller
         ]);
 
         $message = GuestbookMessage::findOrFail($message->id);
-        if(!$message->isEditable($request->ip()))
-            return to_route('guestbook');
+        if(!$message->isEditable($request->ip()) &&
+            !$this->isAdmin())
+                return to_route('guestbook');
 
         $message->name = $request->get('name');
         $message->email = $request->get('email');
@@ -106,10 +109,15 @@ class GuestbookController extends Controller
 
     public function destroy(GuestbookMessage $message, Request $request)
     {
-        if($message->isEditable($request->ip())){
+        if($message->isEditable($request->ip()) || $this->isAdmin()){
             $message->delete();
         }
 
         return to_route('guestbook');
+    }
+
+    private function isAdmin(): bool
+    {
+        return \Auth::user()?->is_admin ?? false;
     }
 }

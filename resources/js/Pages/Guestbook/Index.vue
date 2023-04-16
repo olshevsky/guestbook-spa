@@ -69,7 +69,7 @@ import { computed, ref } from "vue";
 import { Link, useForm, router } from '@inertiajs/vue3'
 import Pagination from '@/Components/Pagination.vue'
 
-const props = defineProps(['messages', 'userIp', 'editMinutes', 'orderBy', 'order'])
+const props = defineProps(['messages', 'userIp', 'editMinutes', 'orderBy', 'order', 'isAdmin'])
 const orderBy = ref(props.orderBy)
 const order = ref(props.order)
 const rows = computed(() => {
@@ -84,7 +84,7 @@ const rows = computed(() => {
             message: message.message,
             created_at: new Date(message.created_at).toLocaleString("lv-Lv"),
             edited_at: message.edited_at ? new Date(message.edited_at).toLocaleString("lv-Lv") : null,
-            editable: (message.ip === props.userIp && !editExpired),
+            editable: (message.ip === props.userIp && !editExpired) || props.isAdmin,
         })
     }
 
