@@ -3,7 +3,10 @@
         <h1 class="text-2xl font-bold mb-6">Messages</h1>
         <div class="float-right">
             <div v-if="props.user">
-                User: {{ user.name }}
+                User: {{ user.name }}&nbsp;
+                <Link href="/user" class="">
+                    <span>Manage users</span>
+                </Link>&nbsp;
                 <button @click.prevent="logout" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Logout
                 </button>
