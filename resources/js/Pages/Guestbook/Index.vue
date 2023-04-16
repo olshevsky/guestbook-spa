@@ -1,6 +1,19 @@
 <template>
     <div class="p-6">
         <h1 class="text-2xl font-bold mb-6">Messages</h1>
+        <div class="float-right">
+            <div v-if="props.user">
+                User: {{ user.name }}
+                <button @click.prevent="logout" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Logout
+                </button>
+            </div>
+            <div v-else>
+                <button @click.prevent="login" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Login
+                </button>
+            </div>
+        </div>
         <div class="mb-6">
             <Link href="/guestbook/create" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                 <span>Leave message</span>
@@ -69,7 +82,7 @@ import { computed, ref } from "vue";
 import { Link, useForm, router } from '@inertiajs/vue3'
 import Pagination from '@/Components/Pagination.vue'
 
-const props = defineProps(['messages', 'userIp', 'editMinutes', 'orderBy', 'order', 'isAdmin'])
+const props = defineProps(['messages', 'userIp', 'editMinutes', 'orderBy', 'order', 'isAdmin', 'user'])
 const orderBy = ref(props.orderBy)
 const order = ref(props.order)
 const rows = computed(() => {
@@ -102,5 +115,13 @@ const deleteMessage = (message) => {
     if (confirm('Are you sure you want to delete this message?')) {
         form.delete(`/guestbook/${message.id}`)
     }
+}
+
+const logout = () => {
+    router.post(`/logout`)
+}
+
+const login = () => {
+    router.get(`/login `)
 }
 </script>

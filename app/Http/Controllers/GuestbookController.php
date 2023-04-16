@@ -22,7 +22,8 @@ class GuestbookController extends Controller
             'order' => $order,
             'userIp'=> $request->ip(),
             'editMinutes' => GuestbookMessage::$editMinutes,
-            'isAdmin' => $this->isAdmin()
+            'isAdmin' => $this->isAdmin(),
+            'user' => \Auth::user()
         ]);
     }
 
